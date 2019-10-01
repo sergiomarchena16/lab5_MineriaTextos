@@ -157,3 +157,5 @@ ggplot (top20unig, aes(x = reorder(UniGram, - Frequency), y= Frequency )) +
   ylab( "Frequencia" ) +
   theme ( axis.text.x = element_text ( angle = 45 , hjust = 1 ) )
 
+########## predicciones ###########
+
