@@ -127,6 +127,8 @@ SampCrps<- tm_map(SampCrps, tun)
 #White Space
 SampCrps<- tm_map(SampCrps, stripWhitespace)
 
+#Stop words
+SampCrps<-tm_map(SampCrps, removeWords, stopwords("english"))
 
 #### N-GRAMAS ####
 install.packages("stylo")
@@ -137,14 +139,10 @@ myCrps<- txt.to.words(SampCrps)
 # se crean data frames para el unigrama, digrmama y trigrama
 
 tblUniGrm<-data.frame(table(make.ngrams(myCrps, ngram.size = 1)))
-tbldiGrm<-data.frame(table(make.ngrams(myCrps, ngram.size = 2)))
-tbltriGrm<-data.frame(table(make.ngrams(myCrps, ngram.size = 3)))
-
-#Create a sorted table "stbl*" by decending frequency count
+#tbldiGrm<-data.frame(table(make.ngrams(myCrps, ngram.size = 2)))
+#tbltriGrm<-data.frame(table(make.ngrams(myCrps, ngram.size = 3)))
 
 stblUnigrm<-tblUniGrm[order(tblUniGrm$Freq, decreasing = TRUE),]
-stblDigrm<-tbldiGrm[order(tbldiGrm$Freq, decreasing = TRUE),]
-stbltrigrm<-tbltriGrm[order(tbltriGrm$Freq, decreasing = TRUE),]
 
 
 top20unig<-stblUnigrm[1:20,]
@@ -152,16 +150,10 @@ colnames(top20unig)<-c("UniGram","Frequency")
 
 library(ggplot2)
 
-
 ggplot (top20unig, aes(x = reorder(UniGram, - Frequency), y= Frequency )) + 
-  geom_bar( stat = "Identity" , fill = "magenta" ) +  
+  geom_bar( stat = "Identity" , fill = "lightblue" ) +  
   geom_text( aes (label = Frequency ) , vjust = - 0.20, size = 3 ) +
-  xlab( "UniGram List" ) +
-  ylab( "Frequency" ) +
+  xlab( "UniGramas" ) +
+  ylab( "Frequencia" ) +
   theme ( axis.text.x = element_text ( angle = 45 , hjust = 1 ) )
 
-top20dig<-stblDigrm[1:20,]
-colnames(top20dig)<-c("DiGram","Frequency")
-
-top20trig<-stbltrigrm[1:20,]
-colnames(top20trig) <- c("TriGram","Frequency")
